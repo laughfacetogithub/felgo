@@ -1,26 +1,16 @@
+import Felgo 3.0
 import QtQuick 2.0
 
-Rectangle {
-  id: myButton
-  width: 100
-  height: 50
-  color: mouseArea.pressed ? "#546632" : "#32665a"
+Item {
+  width: gameScene.gridSize
+  height: gameScene.gridSize
+  property alias image: sprite.source
+  property string pos: "mid" // can be either "mid","left" or "right"
 
-  property alias labelText: label.text
-  signal clicked
-
-  Text {
-    id: label
-    text: "Some Default Value If Needed"
-    color: "white"
-    anchors.centerIn: parent
-  }
-
-  MouseArea {
-    id: mouseArea
-    anchors.fill: parent
-    onClicked: {
-      myButton.clicked()
-    }
+  MultiResolutionImage {
+    id: sprite
+    // the anchoring is needed because the start and end tile are actually bigger than the gridSize, because they have some grass hanging from the edge, which we will (for the sake of simplicity) ignore when it comes to collision detection
+    anchors.left: pos == "right" ? parent.left : undefined
+    anchors.right: pos == "left" ? parent.right : undefined
   }
 }
